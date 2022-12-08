@@ -33,6 +33,7 @@ namespace Destify_CodeTest.Models.Services
                 return false;
             }
             _context.Actors.Remove(actor);
+            _context.SaveChanges();
             return true;
         }
 
@@ -48,7 +49,9 @@ namespace Destify_CodeTest.Models.Services
 
         public List<Actor> Search(string query)
         {
-            throw new NotImplementedException();
+            return _context.Actors
+                .Where(x => x.Name.Contains(query))
+                .ToList();
         }
 
         public Actor Update(Actor actor)

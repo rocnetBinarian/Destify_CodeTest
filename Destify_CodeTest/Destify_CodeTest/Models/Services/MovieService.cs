@@ -31,6 +31,7 @@ namespace Destify_CodeTest.Models.Services
                 return false;
             }
             _context.Movies.Remove(movie);
+            _context.SaveChanges();
             return true;
         }
 
@@ -46,7 +47,9 @@ namespace Destify_CodeTest.Models.Services
 
         public List<Movie> Search(string query)
         {
-            throw new NotImplementedException();
+            return _context.Movies
+                .Where(x => x.Name.Contains(query))
+                .ToList();
         }
 
         public Movie Update(Movie movie)
