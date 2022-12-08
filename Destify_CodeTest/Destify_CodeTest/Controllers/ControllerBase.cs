@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Serilog;
 using ILogger = Serilog.ILogger;
 
-namespace TEMPLATE.Controllers
+namespace Destify_CodeTest.Controllers
 {
     public class ControllerBase : Controller
     {

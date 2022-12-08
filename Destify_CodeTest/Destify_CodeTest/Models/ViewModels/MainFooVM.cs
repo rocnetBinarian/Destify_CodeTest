@@ -1,4 +1,4 @@
-﻿namespace TEMPLATE.Models.ViewModels
+﻿namespace Destify_CodeTest.Models.ViewModels
 {
     public class MainFooVM
     {

@@ -1,6 +1,6 @@
 ﻿using Serilog;
 
-namespace TEMPLATE
+namespace Destify_CodeTest
 {
     public static class Globals
     {

@@ -1,3 +1,3 @@
-# ASP_DOTNET_TEMPLATE
+# Destify_CodeTest
 
-Template repo for a typical ASP.NET project
+Database calls are not async because we're dealing with an in-memory sqlite database.  There's no need for async.

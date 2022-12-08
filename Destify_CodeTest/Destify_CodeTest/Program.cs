@@ -1,5 +1,8 @@
 using Serilog;
-using TEMPLATE;
+using Destify_CodeTest;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Destify_CodeTest.Models.Entities;
+using Destify_CodeTest.Models.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +21,11 @@ Globals.CompilationEnvironment = "Production";
 
 builder.Configuration
     .AddJsonFile($"appsettings.{Globals.CompilationEnvironment}.json", optional: true);
+
+
+var CONNSTRING = builder.Configuration.GetConnectionString("MovieConnString");
+builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddSqlite<MovieContext>(CONNSTRING);
 
 var app = builder.Build();
 
@@ -47,5 +55,27 @@ Log.Logger = Globals.LogConf.CreateLogger();
 #endregion
 
 Log.Information("Logging Initialized");
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetService<MovieContext>();
+    dbContext.Database.EnsureDeleted();
+    dbContext.Database.EnsureCreated();
+    dbContext.SaveChanges();
+
+
+    var movieService = scope.ServiceProvider.GetService<IMovieService>();
+    movieService.Create(new Movie()
+    {
+        Name = "First Movie",
+        Actors = new List<Actor>()
+        {
+            new Actor() {Name = "Al Alington"},
+            new Actor() {Name = "Bob Bobbington"}
+        }
+    });
+}
+
 
 app.Run();

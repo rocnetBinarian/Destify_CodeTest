@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "TEMPLATE": {
+    "Destify_CodeTest": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

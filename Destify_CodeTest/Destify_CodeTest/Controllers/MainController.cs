@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace TEMPLATE.Controllers
+namespace Destify_CodeTest.Controllers
 {
     [Route("")]
     public class MainController : ControllerBase
