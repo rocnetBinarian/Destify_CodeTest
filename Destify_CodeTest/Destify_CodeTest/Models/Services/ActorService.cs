@@ -11,18 +11,11 @@ namespace Destify_CodeTest.Models.Services
             _context = context;
         }
 
-        public bool Create(Actor actor)
+        public int Create(Actor actor)
         {
-
-            try
-            {
-                _context.Actors.Add(actor);
-                _context.SaveChanges();
-            } catch (Exception ex)
-            {
-                return false;
-            }
-            return true;
+            _context.Actors.Add(actor);
+            _context.SaveChanges();
+            return actor.Id;
         }
 
         public bool DeleteById (int id)

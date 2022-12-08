@@ -10,17 +10,11 @@ namespace Destify_CodeTest.Models.Services
         {
             _context = context;
         }
-        public bool Create(Movie movie)
+        public int Create(Movie movie)
         {
-            try
-            {
-                _context.Movies.Add(movie);
-                _context.SaveChanges();
-            } catch (Exception ex)
-            {
-                return false;
-            }
-            return true;
+            _context.Movies.Add(movie);
+            _context.SaveChanges();
+            return movie.Id;
         }
 
         public bool DeleteById(int id)

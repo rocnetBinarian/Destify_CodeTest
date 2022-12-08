@@ -5,26 +5,26 @@ using Microsoft.AspNetCore.Mvc;
 namespace Destify_CodeTest.Controllers
 {
     [ApiController]
-    [Route("Movies")]
-    public class MovieController : ControllerBase
+    [Route("Actors")]
+    public class ActorController : ControllerBase
     {
-        private readonly IMovieService _movieService;
-        public MovieController(IMovieService movieService)
+        private readonly IActorService _actorService;
+        public ActorController(IActorService actorService)
         {
-            _movieService = movieService;
+            _actorService = actorService;
         }
 
         [HttpPost]
         [Route("Create")]
-        public IActionResult Create(Movie movie)
+        public IActionResult Create(Actor actor)
         {
             try
             {
-                var id = _movieService.Create(movie);
-                return Created("Created movie with ID " + id, movie);
+                var id = _actorService.Create(actor);
+                return Created("Created actor with ID " + id, actor);
             } catch (Exception ex)
             {
-                return StatusCode(500, "Failed to create movie: " + ex.ToString());
+                return StatusCode(500, "Failed to create actor: " + ex.ToString());
             }
         }
 
@@ -32,10 +32,10 @@ namespace Destify_CodeTest.Controllers
         [Route("Remove")]
         public IActionResult DeleteById(int id)
         {
-            var deleted = _movieService.DeleteById(id);
+            var deleted = _actorService.DeleteById(id);
             if (!deleted)
             {
-                return StatusCode(500, $"Movie with id {id} not found");
+                return StatusCode(500, $"Actor with id {id} not found");
             }
             return Ok();
         }
@@ -44,20 +44,20 @@ namespace Destify_CodeTest.Controllers
         [Route("GetAll")]
         public IActionResult GetAll()
         {
-            var movies = _movieService.GetAll();
-            return Ok(movies);
+            var actors = _actorService.GetAll();
+            return Ok(actors);
         }
 
         [HttpGet]
         [Route("Get")]
         public IActionResult Get(int id)
         {
-            var movie = _movieService.GetById(id);
-            if (movie == default)
+            var actor = _actorService.GetById(id);
+            if (actor == default)
             {
                 return NotFound();
             }
-            return Ok(movie);
+            return Ok(actor);
         }
     }
 }

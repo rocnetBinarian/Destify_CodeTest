@@ -2,7 +2,7 @@
 {
     public interface IActorService
     {
-        bool Create(Entities.Actor actor);
+        int Create(Entities.Actor actor);
         List<Entities.Actor> GetAll();
         Entities.Actor GetById(int id);
         List<Entities.Actor> Search(string query);
