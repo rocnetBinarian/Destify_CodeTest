@@ -45,6 +45,13 @@ namespace Destify_CodeTest.Models.Services
             return _context.MovieRatings.FirstOrDefault(r => r.Id == id);
         }
 
+        public List<MovieRating> GetByMovieId(int id)
+        {
+            return _context.MovieRatings
+                .Where(x => x.MovieId == id)
+                .ToList();
+        }
+
         public MovieRating Update(MovieRating rating)
         {
             throw new NotImplementedException();

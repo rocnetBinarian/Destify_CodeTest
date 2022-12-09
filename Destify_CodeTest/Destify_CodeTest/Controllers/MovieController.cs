@@ -35,7 +35,7 @@ namespace Destify_CodeTest.Controllers
             var deleted = _movieService.DeleteById(id);
             if (!deleted)
             {
-                return StatusCode(500, $"Movie with id {id} not found");
+                return NotFound($"Movie with id {id} not found");
             }
             return Ok();
         }

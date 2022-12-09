@@ -5,6 +5,7 @@
         bool Create(Entities.MovieRating rating);
         List<Entities.MovieRating> GetAll();
         Entities.MovieRating GetById(int id);
+        List<Entities.MovieRating> GetByMovieId(int id);
         Entities.MovieRating Update(Entities.MovieRating rating);
         bool DeleteById(int id);
     }

@@ -35,7 +35,7 @@ namespace Destify_CodeTest.Controllers
             var deleted = _actorService.DeleteById(id);
             if (!deleted)
             {
-                return StatusCode(500, $"Actor with id {id} not found");
+                return NotFound($"Actor with id {id} not found");
             }
             return Ok();
         }
