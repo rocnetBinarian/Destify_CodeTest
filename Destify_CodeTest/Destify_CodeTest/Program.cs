@@ -25,11 +25,19 @@ Globals.CompilationEnvironment = "Production";
 builder.Configuration
     .AddJsonFile($"appsettings.{Globals.CompilationEnvironment}.json", optional: true);
 
-builder.AddAuthentication(e => {
-    e.AddScheme<DefaultAuthHandler>("DefaultHandler", "Default Handler");
-    e.AddScheme<APIAuthHandler>("APIAuthHandler", "Main Authenticator");
+builder.Services.AddAuthentication(c => {
+    c.AddScheme<DefaultAuthHandler>("DefaultHandler", "Default Handler");
+    c.AddScheme<APIAuthHandler>("APIAuthHandler", "Main Authenticator");
+    c.DefaultAuthenticateScheme = "DefaultHandler";
 });
 
+builder.Services.AddAuthorization(c => {
+    c.AddPolicy("CUD", p => {
+        p.RequireAuthenticatedUser();
+        p.RequireClaim(System.Security.Claims.ClaimTypes.Actor, "API User");
+        p.RequireClaim(System.Security.Claims.ClaimTypes.Role, "APIWriter");
+    });
+});
 
 builder.Services.AddSwaggerGen(c => {
     c.SwaggerDoc("v1", new OpenApiInfo{
@@ -41,6 +49,12 @@ builder.Services.AddSwaggerGen(c => {
         Version = "v1"
     });
     c.EnableAnnotations();
+    c.AddSecurityDefinition("API Key", new OpenApiSecurityScheme() {
+        Description = "The API key to access Create/Update/Delete operations",
+        In = ParameterLocation.Header,
+        Name = "X-AUTH-KEY",
+        Type = SecuritySchemeType.ApiKey
+    });
     //var xmlFile = Path.ChangeExtension(typeof(Program).Assembly.Location, ".xml");
     //c.IncludeXmlComments(xmlFile);
     //c.OperationFilter<AppendAuthorizeToSummaryOperationFilter>(); // needed?
