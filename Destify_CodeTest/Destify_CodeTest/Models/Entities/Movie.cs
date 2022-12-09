@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Destify_CodeTest.Models.Entities
 {
@@ -14,6 +15,7 @@ namespace Destify_CodeTest.Models.Entities
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [SwaggerSchema(ReadOnly = true)]
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }

@@ -3,6 +3,9 @@ using Destify_CodeTest;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Destify_CodeTest.Models.Entities;
 using Destify_CodeTest.Models.Services;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
+using Destify_CodeTest.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +25,28 @@ Globals.CompilationEnvironment = "Production";
 builder.Configuration
     .AddJsonFile($"appsettings.{Globals.CompilationEnvironment}.json", optional: true);
 
+builder.AddAuthentication(e => {
+    e.AddScheme<DefaultAuthHandler>("DefaultHandler", "Default Handler");
+    e.AddScheme<APIAuthHandler>("APIAuthHandler", "Main Authenticator");
+});
+
+
+builder.Services.AddSwaggerGen(c => {
+    c.SwaggerDoc("v1", new OpenApiInfo{
+        Title = "Destify Code Test API Documentation",
+        Description = "Contains documentation information for the API endpoints available in the Destify Code Test API.",
+        Contact = new OpenApiContact {
+            Name = "Russell Uhl"
+        },
+        Version = "v1"
+    });
+    c.EnableAnnotations();
+    //var xmlFile = Path.ChangeExtension(typeof(Program).Assembly.Location, ".xml");
+    //c.IncludeXmlComments(xmlFile);
+    //c.OperationFilter<AppendAuthorizeToSummaryOperationFilter>(); // needed?
+});
+builder.Services.AddMvcCore()
+    .AddApiExplorer();
 
 var CONNSTRING = builder.Configuration.GetConnectionString("MovieConnString");
 builder.Services.AddScoped<IMovieService, MovieService>();
@@ -47,6 +72,12 @@ app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();
 app.MapRazorPages();
+app.UseSwagger(c => {
+    c.SerializeAsV2 = false;
+});
+app.UseSwaggerUI(c =>  {
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Destify Code Test API");
+});
 
 #region Configure Logging
 Globals.LogConf = new LoggerConfiguration()
