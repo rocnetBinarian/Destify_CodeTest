@@ -40,6 +40,16 @@ namespace Destify_CodeTest.Models.Services
             return _context.Actors.FirstOrDefault(x => x.Id == id);
         }
 
+        public List<Actor> GetByMovieId(int id)
+        {
+            var movie = _context.Movies.FirstOrDefault(x => x.Id == id);
+            if (movie == default)
+                return null;
+            return _context.Actors
+                .Where(x => x.Movies.Contains(movie))
+                .ToList();
+        }
+
         public List<Actor> Search(string query)
         {
             return _context.Actors
