@@ -417,3 +417,4 @@ appsettings.*.json
 # Built Visual Studio Code Extensions
 *.vsix
 
+movies.db-*

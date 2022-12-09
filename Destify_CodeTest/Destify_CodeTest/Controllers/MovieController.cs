@@ -1,9 +1,12 @@
 ﻿using Destify_CodeTest.Models.Entities;
 using Destify_CodeTest.Models.Services;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Destify_CodeTest.Controllers
 {
+    [Authorize(Policy = "CUD")]
     [ApiController]
     [Route("Movies")]
     public class MovieController : ControllerBase
@@ -40,6 +43,7 @@ namespace Destify_CodeTest.Controllers
             return Ok();
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [Route("GetAll")]
         public IActionResult GetAll()
@@ -48,6 +52,7 @@ namespace Destify_CodeTest.Controllers
             return Ok(movies);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [Route("Get")]
         public IActionResult Get(int id)

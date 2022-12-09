@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Serilog;
 using ILogger = Serilog.ILogger;
 
 namespace Destify_CodeTest.Controllers
 {
+    [Authorize(AuthenticationSchemes = "APIAuthHandler")]
     public class ControllerBase : Controller
     {
         protected ILogger logger;

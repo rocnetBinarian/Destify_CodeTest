@@ -25,31 +25,38 @@ Globals.CompilationEnvironment = "Production";
 builder.Configuration
     .AddJsonFile($"appsettings.{Globals.CompilationEnvironment}.json", optional: true);
 
-builder.Services.AddAuthentication(c => {
+builder.Services.AddAuthentication(c =>
+{
     c.AddScheme<DefaultAuthHandler>("DefaultHandler", "Default Handler");
     c.AddScheme<APIAuthHandler>("APIAuthHandler", "Main Authenticator");
     c.DefaultAuthenticateScheme = "DefaultHandler";
 });
 
-builder.Services.AddAuthorization(c => {
-    c.AddPolicy("CUD", p => {
+builder.Services.AddAuthorization(c =>
+{
+    c.AddPolicy("CUD", p =>
+    {
         p.RequireAuthenticatedUser();
         p.RequireClaim(System.Security.Claims.ClaimTypes.Actor, "API User");
         p.RequireClaim(System.Security.Claims.ClaimTypes.Role, "APIWriter");
     });
 });
 
-builder.Services.AddSwaggerGen(c => {
-    c.SwaggerDoc("v1", new OpenApiInfo{
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
         Title = "Destify Code Test API Documentation",
         Description = "Contains documentation information for the API endpoints available in the Destify Code Test API.",
-        Contact = new OpenApiContact {
+        Contact = new OpenApiContact
+        {
             Name = "Russell Uhl"
         },
         Version = "v1"
     });
     c.EnableAnnotations();
-    c.AddSecurityDefinition("API Key", new OpenApiSecurityScheme() {
+    c.AddSecurityDefinition("API Key", new OpenApiSecurityScheme()
+    {
         Description = "The API key to access Create/Update/Delete operations",
         In = ParameterLocation.Header,
         Name = "X-AUTH-KEY",
@@ -86,10 +93,12 @@ app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();
 app.MapRazorPages();
-app.UseSwagger(c => {
+app.UseSwagger(c =>
+{
     c.SerializeAsV2 = false;
 });
-app.UseSwaggerUI(c =>  {
+app.UseSwaggerUI(c =>
+{
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Destify Code Test API");
 });
 
