@@ -59,7 +59,7 @@ namespace Destify_CodeTest.Models.Services
 
         public Actor Update(Actor actor)
         {
-            var dbActor = _context.Actors.FirstOrDefault(x => x.Id == actor.Id);
+            var dbActor = GetById(actor.Id);
             if (dbActor == default)
                 return null;
             dbActor.Name = actor.Name ?? dbActor.Name;
@@ -79,7 +79,7 @@ namespace Destify_CodeTest.Models.Services
             if (actorById == default) {
                 return new KeyNotFoundException("Could not find actor with id "+actorId);
             }
-            if (actor.Id != actorId) {
+            if (actor.Id != default(int) && actor.Id != actorId) {
                 return new ArgumentException("ActorId in request path must match ActorId in request body");
             }
             try {

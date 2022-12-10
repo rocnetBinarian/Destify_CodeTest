@@ -10,6 +10,7 @@ namespace Destify_CodeTest.Models.Services
         List<Entities.Movie> GetByActorId(int id);
         List<Entities.Movie> Search(string query);
         Entities.Movie Update(Entities.Movie movie);
+        Exception Replace(int movieId, Entities.Movie movie);
         bool DeleteById(int id);
     }
 }

@@ -58,7 +58,36 @@ namespace Destify_CodeTest.Models.Services
 
         public Movie Update(Movie movie)
         {
-            throw new NotImplementedException();
+            var dbMovie = GetById(movie.Id);
+            if (dbMovie == default)
+                return null;
+            dbMovie.Name = movie.Name ?? dbMovie.Name;
+            var newRatingIds = movie.MovieRatings.Select(r => r.Id).Except(dbMovie.MovieRatings.Select(r => r.Id));
+            var newRatings = movie.MovieRatings.Where(r => newRatingIds.Contains(r.Id)).ToList();
+
+            newRatings.ForEach(r => {
+                dbMovie.MovieRatings.Add(r);
+            });
+            _context.SaveChanges();
+            return dbMovie;
+        }
+
+        public Exception Replace(int movieId, Movie movie)
+        {
+            var movieById = GetById(movieId);
+            if (movieById == default) {
+                return new KeyNotFoundException("Could not find movie with id " + movieId);
+            }
+            if (movie.Id != default(int) && movie.Id != movieId) {
+                return new ArgumentException("MovieId in request path must match MovieId in request body");
+            }
+            try {
+                _context.Entry(movieById).CurrentValues.SetValues(movie);
+                _context.SaveChanges();
+            } catch (Exception ex) {
+                return ex;
+            }
+            return null;
         }
     }
 }

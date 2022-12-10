@@ -63,5 +63,28 @@ namespace Destify_CodeTest.Controllers
             }
             return Ok(rating);
         }
+
+        [HttpPatch]
+        [Route("Update")]
+        public IActionResult Update(MovieRating rating) {
+            var rtn = _ratingService.Update(rating);
+            return Ok(rtn);
+        }
+
+        [HttpPut]
+        [Route("Replace/{ratingId:int}")]
+        public IActionResult Replace(int ratingId, MovieRating rating) {
+            var rtn = _ratingService.Replace(ratingId, rating);
+            if (rtn == null) {
+                return Ok();
+            }
+            if (rtn is KeyNotFoundException) {
+                return NotFound(rtn.Message);
+            }
+            if (rtn is ArgumentException) {
+                return BadRequest(rtn.Message);
+            }
+            return StatusCode(500, rtn.Message);
+        }
     }
 }

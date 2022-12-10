@@ -54,7 +54,32 @@ namespace Destify_CodeTest.Models.Services
 
         public MovieRating Update(MovieRating rating)
         {
-            throw new NotImplementedException();
+            var dbRating = GetById(rating.Id);
+            if (dbRating == default)
+                return null;
+            if (rating.Rating != default(int))
+                dbRating.Rating = rating.Rating;
+            // Other updates here, such as rater name, etc.
+            _context.SaveChanges();
+            return dbRating;
+        }
+
+        public Exception Replace(int MovieRatingId, MovieRating rating)
+        {
+            var ratingById = GetById(MovieRatingId);
+            if (ratingById == default) {
+                return new KeyNotFoundException("Could not find rating with id "+MovieRatingId);
+            }
+            if (MovieRatingId != default(int) && rating.Id != MovieRatingId) {
+                return new ArgumentException("RatingId in request path must match RatingId in request body");
+            }
+            try {
+                _context.Entry(ratingById).CurrentValues.SetValues(rating);
+                _context.SaveChanges();
+            } catch (Exception ex) {
+                return ex;
+            }
+            return null;
         }
     }
 }
