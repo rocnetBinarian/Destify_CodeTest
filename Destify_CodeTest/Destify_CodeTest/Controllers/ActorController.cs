@@ -65,24 +65,30 @@ namespace Destify_CodeTest.Controllers
         }
 
         [HttpPatch]
-        [Route("Update")]
-        public IActionResult Update(Actor actor) {
-            var rtn = _actorService.Update(actor);
+        [Route("Update/{actorId:int}")]
+        public IActionResult Update(int actorId, Actor actor) {
+            if (actor.Id != default(int) && actorId != actor.Id) {
+                return BadRequest("ActorId in request path must match ActorId in request body");
+            }
+            var rtn = _actorService.Update(actorId, actor);
+            if (rtn == null) {
+                return NotFound("Could not find actor with id " + actorId);
+            }
             return Ok(rtn);
         }
 
         [HttpPut]
         [Route("Replace/{actorId:int}")]
         public IActionResult Replace(int actorId, Actor actor) {
+            if (actorId != actor.Id) {
+                return BadRequest("ActorId in request path must match ActorId in request body");
+            }
             var rtn = _actorService.Replace(actorId, actor);
             if (rtn == null) {
                 return Ok();
             }
             if (rtn is KeyNotFoundException) {
                 return NotFound(rtn.Message);
-            }
-            if (rtn is ArgumentException) {
-                return BadRequest(rtn.Message);
             }
             return StatusCode(500, rtn.Message);
         }

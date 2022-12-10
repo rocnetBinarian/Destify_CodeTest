@@ -77,15 +77,15 @@ namespace Destify_CodeTest.Controllers
         [HttpPut]
         [Route("Replace/{ratingId:int}")]
         public IActionResult Replace(int ratingId, MovieRating rating) {
+            if (ratingId != rating.Id) {
+                return BadRequest("RatingId in request path must match RatingId in request body");
+            }
             var rtn = _ratingService.Replace(ratingId, rating);
             if (rtn == null) {
                 return Ok();
             }
             if (rtn is KeyNotFoundException) {
                 return NotFound(rtn.Message);
-            }
-            if (rtn is ArgumentException) {
-                return BadRequest(rtn.Message);
             }
             return StatusCode(500, rtn.Message);
         }

@@ -57,11 +57,14 @@ namespace Destify_CodeTest.Models.Services
                 .ToList();
         }
 
-        public Actor Update(Actor actor)
+        public Actor Update(int actorId, Actor actor)
         {
             var dbActor = GetById(actor.Id);
             if (dbActor == default)
                 return null;
+            if (actor.Id != default(int) && actor.Id != actorId) {
+                return dbActor;
+            }
             dbActor.Name = actor.Name ?? dbActor.Name;
             var newMovieIds = actor.Movies.Select(m => m.Id).Except(dbActor.Movies.Select(m => m.Id));
             var newMovies = actor.Movies.Where(m => newMovieIds.Contains(m.Id)).ToList();
@@ -75,12 +78,12 @@ namespace Destify_CodeTest.Models.Services
 
         public Exception Replace(int actorId, Actor actor)
         {
+            if (actor.Id != default(int) && actor.Id != actorId) {
+                return new ArgumentException("ActorId in request path must match ActorId in request body");
+            }
             var actorById = GetById(actorId);
             if (actorById == default) {
                 return new KeyNotFoundException("Could not find actor with id "+actorId);
-            }
-            if (actor.Id != default(int) && actor.Id != actorId) {
-                return new ArgumentException("ActorId in request path must match ActorId in request body");
             }
             try {
                 _context.Entry(actorById).CurrentValues.SetValues(actor);
