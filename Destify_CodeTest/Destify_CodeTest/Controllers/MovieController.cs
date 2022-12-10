@@ -66,24 +66,30 @@ namespace Destify_CodeTest.Controllers
         }
 
         [HttpPatch]
-        [Route("Update")]
-        public IActionResult Update(Movie movie) {
-            var rtn = _movieService.Update(movie);
+        [Route("Update/{movieId:int}")]
+        public IActionResult Update(int movieId, Movie movie) {
+            if (movieId != movie.Id) {
+                return BadRequest("MovieId in request path must match MovieId in request body");
+            } 
+            var rtn = _movieService.Update(movieId, movie);
+            if (rtn == null) {
+                return NotFound("Could not find movie with id " + movieId);
+            }
             return Ok(rtn);
         }
 
         [HttpPut]
-        [Route("Replace/{ratingId:int}")]
+        [Route("Replace/{movieId:int}")]
         public IActionResult Replace(int movieId, Movie movie) {
+            if (movieId != movie.Id) {
+                return BadRequest("MovieId in request path must match MovieId in request body");
+            }
             var rtn = _movieService.Replace(movieId, movie);
             if (rtn == null) {
                 return Ok();
             }
             if (rtn is KeyNotFoundException) {
                 return NotFound(rtn.Message);
-            }
-            if (rtn is ArgumentException) {
-                return BadRequest(rtn.Message);
             }
             return StatusCode(500, rtn.Message);
         }

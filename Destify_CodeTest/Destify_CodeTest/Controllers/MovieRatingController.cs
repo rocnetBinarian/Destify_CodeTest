@@ -65,8 +65,8 @@ namespace Destify_CodeTest.Controllers
         }
 
         [HttpPatch]
-        [Route("Update")]
-        public IActionResult Update(MovieRating rating) {
+        [Route("Update/{ratingId:int}")]
+        public IActionResult Update(int ratingId, MovieRating rating) {
             var rtn = _ratingService.Update(rating);
             return Ok(rtn);
         }

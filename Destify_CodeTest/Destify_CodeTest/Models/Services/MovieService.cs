@@ -56,11 +56,14 @@ namespace Destify_CodeTest.Models.Services
                 .ToList();
         }
 
-        public Movie Update(Movie movie)
+        public Movie Update(int movieId, Movie movie)
         {
-            var dbMovie = GetById(movie.Id);
+            var dbMovie = GetById(movieId);
             if (dbMovie == default)
                 return null;
+            if (movie.Id != default(int) && movie.Id != movieId) {
+                return dbMovie;
+            }
             dbMovie.Name = movie.Name ?? dbMovie.Name;
             var newRatingIds = movie.MovieRatings.Select(r => r.Id).Except(dbMovie.MovieRatings.Select(r => r.Id));
             var newRatings = movie.MovieRatings.Where(r => newRatingIds.Contains(r.Id)).ToList();
@@ -74,12 +77,12 @@ namespace Destify_CodeTest.Models.Services
 
         public Exception Replace(int movieId, Movie movie)
         {
+            if (movie.Id != default(int) && movie.Id != movieId) {
+                return new ArgumentException("MovieId in request path must match MovieId in request body");
+            }
             var movieById = GetById(movieId);
             if (movieById == default) {
                 return new KeyNotFoundException("Could not find movie with id " + movieId);
-            }
-            if (movie.Id != default(int) && movie.Id != movieId) {
-                return new ArgumentException("MovieId in request path must match MovieId in request body");
             }
             try {
                 _context.Entry(movieById).CurrentValues.SetValues(movie);
