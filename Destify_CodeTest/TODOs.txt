@@ -1,3 +1,4 @@
 - UPDATE operations
 - Ensure swagger docs show UPDATE correctly (does the id appear in the request body?)
 - Include the average movie rating whenever a movie is returned.
+- implement search

@@ -8,6 +8,7 @@
         List<Entities.Actor> GetByMovieId(int id);
         List<Entities.Actor> Search(string query);
         Entities.Actor Update(Entities.Actor actor);
+        Exception Replace(int actorId, Entities.Actor actor);
         bool DeleteById(int id);
     }
 }

@@ -63,5 +63,28 @@ namespace Destify_CodeTest.Controllers
             }
             return Ok(actor);
         }
+
+        [HttpPatch]
+        [Route("Update")]
+        public IActionResult Update(Actor actor) {
+            var rtn = _actorService.Update(actor);
+            return Ok(rtn);
+        }
+
+        [HttpPut]
+        [Route("Replace/{actorId:int}")]
+        public IActionResult Replace(int actorId, Actor actor) {
+            var rtn = _actorService.Replace(actorId, actor);
+            if (rtn == null) {
+                return Ok();
+            }
+            if (rtn is KeyNotFoundException) {
+                return NotFound(rtn.Message);
+            }
+            if (rtn is ArgumentException) {
+                return BadRequest(rtn.Message);
+            }
+            return StatusCode(500, rtn.Message);
+        }
     }
 }
