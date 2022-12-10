@@ -6,7 +6,7 @@
         List<Entities.MovieRating> GetAll();
         Entities.MovieRating GetById(int id);
         List<Entities.MovieRating> GetByMovieId(int id);
-        Entities.MovieRating Update(Entities.MovieRating rating);
+        Entities.MovieRating Update(int MovieRatingId, Entities.MovieRating rating);
         Exception Replace(int MovieRatingId, Entities.MovieRating rating);
         bool DeleteById(int id);
     }

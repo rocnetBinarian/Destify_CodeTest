@@ -68,7 +68,7 @@ namespace Destify_CodeTest.Controllers
         [HttpPatch]
         [Route("Update/{movieId:int}")]
         public IActionResult Update(int movieId, Movie movie) {
-            if (movieId != movie.Id) {
+            if (movie.Id != default(int) && movieId != movie.Id) {
                 return BadRequest("MovieId in request path must match MovieId in request body");
             } 
             var rtn = _movieService.Update(movieId, movie);

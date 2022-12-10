@@ -52,11 +52,14 @@ namespace Destify_CodeTest.Models.Services
                 .ToList();
         }
 
-        public MovieRating Update(MovieRating rating)
+        public MovieRating Update(int ratingId, MovieRating rating)
         {
             var dbRating = GetById(rating.Id);
             if (dbRating == default)
                 return null;
+            if (rating.Id != default(int) && rating.Id != ratingId) {
+                return dbRating;
+            }
             if (rating.Rating != default(int))
                 dbRating.Rating = rating.Rating;
             // Other updates here, such as rater name, etc.
@@ -66,12 +69,12 @@ namespace Destify_CodeTest.Models.Services
 
         public Exception Replace(int MovieRatingId, MovieRating rating)
         {
+            if (MovieRatingId != default(int) && rating.Id != MovieRatingId) {
+                return new ArgumentException("RatingId in request path must match RatingId in request body");
+            }
             var ratingById = GetById(MovieRatingId);
             if (ratingById == default) {
                 return new KeyNotFoundException("Could not find rating with id "+MovieRatingId);
-            }
-            if (MovieRatingId != default(int) && rating.Id != MovieRatingId) {
-                return new ArgumentException("RatingId in request path must match RatingId in request body");
             }
             try {
                 _context.Entry(ratingById).CurrentValues.SetValues(rating);

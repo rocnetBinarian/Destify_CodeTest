@@ -67,7 +67,10 @@ namespace Destify_CodeTest.Controllers
         [HttpPatch]
         [Route("Update/{ratingId:int}")]
         public IActionResult Update(int ratingId, MovieRating rating) {
-            var rtn = _ratingService.Update(rating);
+            if (rating.Id != default(int) && ratingId != rating.Id) {
+                return BadRequest("RatingId in request path must match RatingId in request body");
+            }
+            var rtn = _ratingService.Update(ratingId, rating);
             return Ok(rtn);
         }
 
