@@ -32,7 +32,10 @@ namespace Destify_CodeTest.Models.Services
 
         public List<Movie> GetAll()
         {
-            return _context.Movies.ToList();
+            return _context.Movies
+                .Include(x => x.Actors)
+                .Include(x => x.MovieRatings)
+                .ToList();
         }
 
         public List<Movie> GetByActorId(int id)
@@ -42,6 +45,8 @@ namespace Destify_CodeTest.Models.Services
                 return null;
             return _context.Movies
                 .Where(x => x.Actors.Contains(actor))
+                .Include(x => x.Actors)
+                .Include(x => x.MovieRatings)
                 .ToList();
         }
 

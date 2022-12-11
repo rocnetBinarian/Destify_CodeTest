@@ -50,7 +50,11 @@ namespace Destify_CodeTest.Controllers
         public IActionResult GetAll()
         {
             var movies = _movieService.GetAll();
-            return Ok(movies);
+            var rtn = new List<s_Movie>();
+            movies.ForEach(m => {
+                rtn.Add(_movieService.BuildMovieVM(m));
+            });
+            return Ok(rtn);
         }
 
         [AllowAnonymous]
@@ -73,10 +77,11 @@ namespace Destify_CodeTest.Controllers
             if (movie.Id != default(int) && movieId != movie.Id) {
                 return BadRequest("MovieId in request path must match MovieId in request body");
             } 
-            var rtn = _movieService.Update(movieId, movie);
-            if (rtn == null) {
+            var mov = _movieService.Update(movieId, movie);
+            if (mov == null) {
                 return NotFound("Could not find movie with id " + movieId);
             }
+            var rtn = _movieService.BuildMovieVM(mov);
             return Ok(rtn);
         }
 
