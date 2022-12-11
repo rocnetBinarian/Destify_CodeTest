@@ -1,5 +1,6 @@
 ﻿using Destify_CodeTest.Models.Entities;
 using Destify_CodeTest.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace Destify_CodeTest.Models.Services
 {
@@ -33,12 +34,18 @@ namespace Destify_CodeTest.Models.Services
 
         public List<Actor> GetAll()
         {
-            return _context.Actors.ToList();
+            return _context.Actors
+                .Include(x => x.Movies)
+                .ThenInclude(x => x.MovieRatings)
+                .ToList();
         }
 
         public Actor GetById(int id)
         {
-            return _context.Actors.FirstOrDefault(x => x.Id == id);
+            return _context.Actors
+                .Include(x => x.Movies)
+                .ThenInclude(x => x.MovieRatings)
+                .FirstOrDefault(x => x.Id == id);
         }
 
         public List<Actor> GetByMovieId(int id)
@@ -48,6 +55,8 @@ namespace Destify_CodeTest.Models.Services
                 return null;
             return _context.Actors
                 .Where(x => x.Movies.Contains(movie))
+                .Include(x => x.Movies)
+                .ThenInclude(x => x.MovieRatings)
                 .ToList();
         }
 

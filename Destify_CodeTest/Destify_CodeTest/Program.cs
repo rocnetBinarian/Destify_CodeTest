@@ -71,6 +71,8 @@ builder.Services.AddMvcCore()
 
 var CONNSTRING = builder.Configuration.GetConnectionString("MovieConnString");
 builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddScoped<IActorService, ActorService>();
+builder.Services.AddScoped<IMovieRatingService, MovieRatingService>();
 builder.Services.AddSqlite<MovieContext>(CONNSTRING);
 
 var app = builder.Build();
