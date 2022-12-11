@@ -1,5 +1,4 @@
 - Add more seed data
-- unit tests
 - Test PUT to make sure it actually does a full replace
 
 BONUS:

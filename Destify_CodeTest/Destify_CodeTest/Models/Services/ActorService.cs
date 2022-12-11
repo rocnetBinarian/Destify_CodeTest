@@ -101,6 +101,7 @@ namespace Destify_CodeTest.Models.Services
             }
             try {
                 _context.Entry(actorById).CurrentValues.SetValues(actor);
+                _context.Entry(actorById).Entity.Movies = actor.Movies;
                 _context.SaveChanges();
             } catch (Exception ex) {
                 return ex;

@@ -99,6 +99,7 @@ namespace Destify_CodeTest.Models.Services
             }
             try {
                 _context.Entry(movieById).CurrentValues.SetValues(movie);
+                _context.Entry(movieById).Entity.Actors = movie.Actors;
                 _context.SaveChanges();
             } catch (Exception ex) {
                 return ex;
