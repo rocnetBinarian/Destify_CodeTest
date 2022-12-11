@@ -4,6 +4,11 @@ using Serilog;
 
 namespace Destify_CodeTest.Models
 {
+    /// <summary>
+    /// Default authentication mechanism, which is a noop.  This may not be strictly
+    ///   necessary in this code test, but I have found it useful in other projects,
+    ///   so I have included it by default.
+    /// </summary>
     public class DefaultAuthHandler : IAuthenticationHandler
     {
         public Task<AuthenticateResult> AuthenticateAsync()
@@ -27,6 +32,9 @@ namespace Destify_CodeTest.Models
         }
     }
 
+    /// <summary>
+    /// Actual auth handler.
+    /// </summary>
     public class APIAuthHandler : IAuthenticationHandler
     {
         private readonly Serilog.ILogger logger;
@@ -39,6 +47,16 @@ namespace Destify_CodeTest.Models
             logger = Log.ForContext<APIAuthHandler>();
         }
 
+        /// <summary>
+        /// Attempts to authenticate the user.
+        /// There are generally three possible outcomes:
+        ///   1. No authentication key was provided at all,
+        ///   2. A key was provided but it was incorrect,
+        ///   3. A correct key was provided.
+        /// In this implementation, we have included a catch-all fourth income,
+        ///   triggered by an unknown state or error.  In this case, we return a fail condition.
+        /// </summary>
+        /// <returns></returns>
         public Task<AuthenticateResult> AuthenticateAsync()
         {
             logger.Debug("Beginning Authentication");
@@ -83,6 +101,12 @@ namespace Destify_CodeTest.Models
             return Task.FromResult(rtn);
         }
 
+        /// <summary>
+        /// Sets the appropriate error code depending on whether the failure was due to
+        ///   bad creds, or a complete lack of creds.
+        /// </summary>
+        /// <param name="properties"></param>
+        /// <returns></returns>
         public Task ChallengeAsync(AuthenticationProperties? properties)
         {
             if (BadAuthNoCreds) {

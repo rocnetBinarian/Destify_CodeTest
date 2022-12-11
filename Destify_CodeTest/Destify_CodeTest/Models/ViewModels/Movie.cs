@@ -1,5 +1,8 @@
 namespace Destify_CodeTest.Models.ViewModels
 {
+    /// <summary>
+    /// Struct to hold non-circular-reference entity data
+    /// </summary>
     public struct s_Movie
     {
         public int Id { get; set; }
@@ -8,6 +11,9 @@ namespace Destify_CodeTest.Models.ViewModels
         public List<s_ActorsInMovie> Actors { get; set; }
     }
 
+    /// <summary>
+    /// Struct to hold non-circular-reference entity data
+    /// </summary>
     public struct s_ActorsInMovie
     {
         public int Id { get; set; }

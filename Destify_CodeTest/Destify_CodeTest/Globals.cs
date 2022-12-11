@@ -2,6 +2,9 @@
 
 namespace Destify_CodeTest
 {
+    /// <summary>
+    /// Globally-accessible information about configurations, the environment, etc.
+    /// </summary>
     public static class Globals
     {
         public static ConfigSettings Config { get; set; }
