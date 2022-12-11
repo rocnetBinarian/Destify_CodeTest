@@ -29,7 +29,7 @@ namespace Destify_CodeTest.Controllers
             try
             {
                 var id = _ratingService.Create(rating);
-                return Created("Created rating with ID " + id, rating);
+                return Created("/Get?id=" + id, rating);
             } catch (Exception ex)
             {
                 return StatusCode(500, "Failed to create rating: " + ex.ToString());

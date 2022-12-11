@@ -31,7 +31,7 @@ namespace Destify_CodeTest.Controllers
             try
             {
                 var id = _movieService.Create(movie);
-                return Created("Created movie with ID " + id, movie);
+                return Created("/Get?id=" + id, movie);
             } catch (Exception ex)
             {
                 return StatusCode(500, "Failed to create movie: " + ex.ToString());
