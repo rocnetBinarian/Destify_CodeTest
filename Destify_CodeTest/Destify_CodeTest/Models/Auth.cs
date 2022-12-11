@@ -1,6 +1,11 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Microsoft.OpenApi.Models;
 using Serilog;
+using Swashbuckle.AspNetCore.Filters;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Destify_CodeTest.Models
 {
@@ -133,4 +138,35 @@ namespace Destify_CodeTest.Models
             return Task.CompletedTask;
         }
     }
+
+    // Taken from https://stackoverflow.com/a/60356993
+    public class ApiKeyOperationFilter : IOperationFilter
+    {
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
+        {
+            // Piggy back off of SecurityRequirementsOperationFilter from Swashbuckle.AspNetCore.Filters which has oauth2 as the default security scheme.
+            var filter = new SecurityRequirementsOperationFilter(securitySchemaName: "API Key");
+            filter.Apply(operation, context);
+        }
+    }
+
+    /// <summary>
+    /// Custom simple auth handler.  This is necessary because for some reason the default auth handler doesn't succeed, even if we have a successful auth.
+    /// </summary>
+    public class IsAuthedHandler : AuthorizationHandler<DenyAnonymousAuthorizationRequirement>
+    {
+        /// <summary>
+        /// Check if we're authenticated.  If we are, then we're not anonymous and we can continue.  Authorization happens elsewhere.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="requirement"></param>
+        /// <returns></returns>
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, DenyAnonymousAuthorizationRequirement requirement)
+        {
+            if (context.User != null)
+                context.Succeed(requirement);
+            return Task.CompletedTask;
+        }
+    }
+
 }

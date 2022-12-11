@@ -13,6 +13,7 @@ namespace Destify_CodeTest.Models.Services
         }
         public int Create(Movie movie)
         {
+            movie.Id = default;
             _context.Movies.Add(movie);
             _context.SaveChanges();
             return movie.Id;

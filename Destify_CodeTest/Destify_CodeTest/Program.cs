@@ -6,6 +6,7 @@ using Destify_CodeTest.Models.Services;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Destify_CodeTest.Models;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
@@ -64,7 +65,7 @@ builder.Services.AddSwaggerGen(c =>
     });
     var xmlFile = Path.ChangeExtension(typeof(Program).Assembly.Location, ".xml");
     c.IncludeXmlComments(xmlFile);
-    //c.OperationFilter<AppendAuthorizeToSummaryOperationFilter>(); // needed?
+    c.OperationFilter<ApiKeyOperationFilter>(); // needed?
 });
 builder.Services.AddMvcCore()
     .AddApiExplorer();
@@ -73,6 +74,7 @@ var CONNSTRING = builder.Configuration.GetConnectionString("MovieConnString");
 builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<IActorService, ActorService>();
 builder.Services.AddScoped<IMovieRatingService, MovieRatingService>();
+builder.Services.AddScoped<IAuthorizationHandler, IsAuthedHandler>();
 builder.Services.AddSqlite<MovieContext>(CONNSTRING);
 
 var app = builder.Build();
@@ -92,6 +94,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.MapRazorPages();
