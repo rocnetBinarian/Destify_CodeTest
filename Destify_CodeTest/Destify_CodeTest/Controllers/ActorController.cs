@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Destify_CodeTest.Controllers
 {
+    /// <summary>
+    /// Controller for everything actor-related
+    /// </summary>
     [Authorize(Policy = "CUD")]
     [ApiController]
     [Route("Actors")]
@@ -17,6 +20,11 @@ namespace Destify_CodeTest.Controllers
             _actorService = actorService;
         }
 
+        /// <summary>
+        /// Creates an actor using the provided entity data.
+        /// </summary>
+        /// <param name="actor">The actor to be created.</param>
+        /// <returns>Created if successful, or 500 if there was an error.</returns>
         [HttpPost]
         [Route("Create")]
         public IActionResult Create(Actor actor)
@@ -31,6 +39,11 @@ namespace Destify_CodeTest.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes an actor with the provided Id
+        /// </summary>
+        /// <param name="id">The Id of the actor to delete.</param>
+        /// <returns>Ok if successful, or 404 if no actor with the provided Id could be found.</returns>
         [HttpDelete]
         [Route("Remove")]
         public IActionResult DeleteById(int id)
@@ -43,6 +56,10 @@ namespace Destify_CodeTest.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Gets all actors.
+        /// </summary>
+        /// <returns>A list of all actors</returns>
         [AllowAnonymous]
         [HttpGet]
         [Route("GetAll")]
@@ -56,6 +73,11 @@ namespace Destify_CodeTest.Controllers
             return Ok(rtn);
         }
 
+        /// <summary>
+        /// Gets an actor with the specified Id.
+        /// </summary>
+        /// <param name="id">The Id of the actor to retrieve.</param>
+        /// <returns>Ok if the actor is found, 404 if not.</returns>
         [AllowAnonymous]
         [HttpGet]
         [Route("Get")]
@@ -70,6 +92,15 @@ namespace Destify_CodeTest.Controllers
             return Ok(rtn);
         }
 
+        /// <summary>
+        /// Updates the provided actor with id <paramref name="actorId"/> to use the values provided by <paramref name="actor"/>
+        /// </summary>
+        /// <param name="actorId">The Id of the actor to update.</param>
+        /// <param name="actor">The updated values to be used.</param>
+        /// <returns>
+        /// BadRequest if <paramref name="actorId"/> and <paramref name="actor"/>'s Id do not match.
+        /// 404 if no actor with id <paramref name="actorId"/> is found.  OK otherwise.
+        /// </returns>
         [HttpPatch]
         [Route("Update/{actorId:int}")]
         public IActionResult Update(int actorId, Actor actor) {
@@ -84,6 +115,16 @@ namespace Destify_CodeTest.Controllers
             return Ok(rtn);
         }
 
+        /// <summary>
+        /// Replaces the provided actor having id <paramref name="actorId"/> with values provided by <paramref name="actor"/>
+        /// </summary>
+        /// <param name="actorId">The Id of the actor to replace.</param>
+        /// <param name="actor">the new values to be used.</param>
+        /// <returns>
+        /// BadRequest if <paramref name="actorId"/> and <paramref name="actor"/>'s Id do not match.
+        /// 404 if no actor with id <paramref name="actorId"/> is found.  OK if the replacement was successful.
+        /// 500 if there was an unexpected error.
+        /// </returns>
         [HttpPut]
         [Route("Replace/{actorId:int}")]
         public IActionResult Replace(int actorId, Actor actor) {
@@ -100,6 +141,11 @@ namespace Destify_CodeTest.Controllers
             return StatusCode(500, rtn.Message);
         }
 
+        /// <summary>
+        /// Case-sensitive search for an actor's name.
+        /// </summary>
+        /// <param name="query">The search query</param>
+        /// <returns>A list of all actors whose names contain <paramref name="query"/></returns>
         [AllowAnonymous]
         [HttpGet]
         [Route("Search/{query}")]

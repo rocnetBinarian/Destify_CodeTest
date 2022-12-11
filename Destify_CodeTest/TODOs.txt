@@ -1,6 +1,7 @@
 
 - comment
 - unit tests
+- Test PUT to make sure it actually does a full replace
 
 BONUS:
 - rate limiting on Get

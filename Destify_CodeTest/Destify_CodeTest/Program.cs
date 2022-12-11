@@ -62,8 +62,8 @@ builder.Services.AddSwaggerGen(c =>
         Name = "X-AUTH-KEY",
         Type = SecuritySchemeType.ApiKey
     });
-    //var xmlFile = Path.ChangeExtension(typeof(Program).Assembly.Location, ".xml");
-    //c.IncludeXmlComments(xmlFile);
+    var xmlFile = Path.ChangeExtension(typeof(Program).Assembly.Location, ".xml");
+    c.IncludeXmlComments(xmlFile);
     //c.OperationFilter<AppendAuthorizeToSummaryOperationFilter>(); // needed?
 });
 builder.Services.AddMvcCore()
@@ -87,7 +87,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
