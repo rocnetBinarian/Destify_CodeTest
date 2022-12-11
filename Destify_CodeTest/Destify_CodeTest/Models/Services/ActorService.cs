@@ -78,7 +78,9 @@ namespace Destify_CodeTest.Models.Services
                 return dbActor;
             }
             dbActor.Name = actor.Name ?? dbActor.Name;
+            // Get all Id's of new movies to be added
             var newMovieIds = actor.Movies.Select(m => m.Id).Except(dbActor.Movies.Select(m => m.Id));
+            // And now get the actual entities instead of just the Ids
             var newMovies = actor.Movies.Where(m => newMovieIds.Contains(m.Id)).ToList();
             
             newMovies.ForEach(m => {
@@ -106,6 +108,12 @@ namespace Destify_CodeTest.Models.Services
             return null;
         }
 
+        /// <summary>
+        /// Builds a struct containing the same data as the provided Entity, but without the
+        ///   circular references.
+        /// </summary>
+        /// <param name="actor">The data to be used</param>
+        /// <returns>The same data as provided, without the circular references.</returns>
         public s_Actor BuildActorVM(Actor actor)
         {
             var movieList = new List<s_MoviesContainingActor>();

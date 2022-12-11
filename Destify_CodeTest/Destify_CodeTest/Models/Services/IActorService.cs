@@ -2,6 +2,9 @@
 
 namespace Destify_CodeTest.Models.Services
 {
+    /// <summary>
+    /// Actor service interface
+    /// </summary>
     public interface IActorService
     {
         int Create(Entities.Actor actor);
