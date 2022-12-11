@@ -1,4 +1,6 @@
-﻿namespace Destify_CodeTest.Models.Services
+﻿using Destify_CodeTest.Models.ViewModels;
+
+namespace Destify_CodeTest.Models.Services
 {
     public interface IActorService
     {
@@ -10,5 +12,6 @@
         Entities.Actor Update(int actorId, Entities.Actor actor);
         Exception Replace(int actorId, Entities.Actor actor);
         bool DeleteById(int id);
+        s_Actor BuildActorVM(Entities.Actor actor);
     }
 }

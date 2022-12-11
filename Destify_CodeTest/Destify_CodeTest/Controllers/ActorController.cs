@@ -1,5 +1,6 @@
 ﻿using Destify_CodeTest.Models.Entities;
 using Destify_CodeTest.Models.Services;
+using Destify_CodeTest.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -48,7 +49,11 @@ namespace Destify_CodeTest.Controllers
         public IActionResult GetAll()
         {
             var actors = _actorService.GetAll();
-            return Ok(actors);
+            var rtn = new List<s_Actor>();
+            actors.ForEach(a => {
+                rtn.Add(_actorService.BuildActorVM(a));
+            });
+            return Ok(rtn);
         }
 
         [AllowAnonymous]
@@ -61,7 +66,8 @@ namespace Destify_CodeTest.Controllers
             {
                 return NotFound();
             }
-            return Ok(actor);
+            var rtn = _actorService.BuildActorVM(actor);
+            return Ok(rtn);
         }
 
         [HttpPatch]
@@ -70,10 +76,11 @@ namespace Destify_CodeTest.Controllers
             if (actor.Id != default(int) && actorId != actor.Id) {
                 return BadRequest("ActorId in request path must match ActorId in request body");
             }
-            var rtn = _actorService.Update(actorId, actor);
-            if (rtn == null) {
+            var act = _actorService.Update(actorId, actor);
+            if (act == null) {
                 return NotFound("Could not find actor with id " + actorId);
             }
+            var rtn = _actorService.BuildActorVM(act);
             return Ok(rtn);
         }
 

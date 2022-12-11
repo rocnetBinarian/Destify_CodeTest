@@ -1,4 +1,5 @@
 ﻿using Destify_CodeTest.Models.Entities;
+using Destify_CodeTest.Models.ViewModels;
 
 namespace Destify_CodeTest.Models.Services
 {
@@ -92,6 +93,30 @@ namespace Destify_CodeTest.Models.Services
                 return ex;
             }
             return null;
+        }
+
+        public s_Actor BuildActorVM(Actor actor)
+        {
+            var movieList = new List<s_MoviesContainingActor>();
+            if (actor.Movies.Count > 0) {
+                foreach (var movie in actor.Movies) {
+                    double? avgRating = null;
+                    if (movie.MovieRatings.Count > 0) {
+                        avgRating = movie.MovieRatings.Average(x => x.Rating);
+                    }
+                    movieList.Add(new s_MoviesContainingActor() {
+                        Id = movie.Id,
+                        Name = movie.Name,
+                        AvgRating = avgRating
+                    });
+                }
+            }
+            var rtn = new s_Actor() {
+                Id = actor.Id,
+                Name = actor.Name,
+                Movies = movieList
+            };
+            return rtn;
         }
     }
 }
