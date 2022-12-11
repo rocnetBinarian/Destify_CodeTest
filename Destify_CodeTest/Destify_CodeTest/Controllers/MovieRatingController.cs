@@ -1,5 +1,6 @@
 ﻿using Destify_CodeTest.Models.Entities;
 using Destify_CodeTest.Models.Services;
+using Destify_CodeTest.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -63,7 +64,12 @@ namespace Destify_CodeTest.Controllers
         public IActionResult GetAll()
         {
             var ratings = _ratingService.GetAll();
-            return Ok(ratings);
+            var rtn = new List<s_MovieRating>();
+            ratings.ForEach(r =>
+            {
+                rtn.Add(_ratingService.BuildRatingVM(r));
+            });
+            return Ok(rtn);
         }
 
         /// <summary>
@@ -81,7 +87,8 @@ namespace Destify_CodeTest.Controllers
             {
                 return NotFound();
             }
-            return Ok(rating);
+            var rtn = _ratingService.BuildRatingVM(rating);
+            return Ok(rtn);
         }
 
         /// <summary>

@@ -125,13 +125,38 @@ using (var scope = app.Services.CreateScope())
 
 
     var movieService = scope.ServiceProvider.GetService<IMovieService>();
+    var actor = new Actor()
+    {
+        Name = "The Bobbiest of Bobs"
+    };
     movieService.Create(new Movie()
     {
         Name = "First Movie",
         Actors = new List<Actor>()
         {
             new Actor() {Name = "Al Alington"},
-            new Actor() {Name = "Bob Bobbington"}
+            new Actor() {Name = "Bob Bobbington"},
+            actor
+        }
+    });
+    movieService.Create(new Movie()
+    {
+        Name = "Bob's Great Adventure",
+        Actors = new List<Actor>()
+        {
+            new Actor() {Name = "Bob Bobbington"}, // different bob
+            new Actor() {Name = "Billy Bob Bobbert II"},
+            actor // the same bob
+        },
+        MovieRatings = new List<MovieRating> ()
+        {
+            new MovieRating() {Rating = 8},
+            new MovieRating() {Rating = 6},
+            new MovieRating() {Rating = 7},
+            new MovieRating() {Rating = 5},
+            new MovieRating() {Rating = 3},
+            new MovieRating() {Rating = 0},
+            new MovieRating() {Rating = 9}
         }
     });
 }

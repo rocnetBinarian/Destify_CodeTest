@@ -1,4 +1,6 @@
 ﻿using Destify_CodeTest.Models.Entities;
+using Destify_CodeTest.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace Destify_CodeTest.Models.Services
 {
@@ -37,12 +39,16 @@ namespace Destify_CodeTest.Models.Services
 
         public List<MovieRating> GetAll()
         {
-            return _context.MovieRatings.ToList();
+            return _context.MovieRatings
+                .Include(x => x.Movie)
+                .ToList();
         }
 
         public MovieRating GetById(int id)
         {
-            return _context.MovieRatings.FirstOrDefault(r => r.Id == id);
+            return _context.MovieRatings
+                .Include(x => x.Movie)
+                .FirstOrDefault(r => r.Id == id);
         }
 
         public List<MovieRating> GetByMovieId(int id)
@@ -83,6 +89,27 @@ namespace Destify_CodeTest.Models.Services
                 return ex;
             }
             return null;
+        }
+
+        /// <summary>
+        /// Builds a struct containing the same data as the provided Entity, but without the
+        ///   circular references.
+        /// </summary>
+        /// <param name="actor">The data to be used</param>
+        /// <returns>The same data as provided, without the circular references.</returns>
+        public s_MovieRating BuildRatingVM(MovieRating rating)
+        {
+            var rtn = new s_MovieRating()
+            {
+                Id = rating.Id,
+                Rating = rating.Rating,
+                Movie = new s_MovieRatingMovie()
+                {
+                    Id = rating.MovieId,
+                    Name = rating.Movie.Name
+                }
+            };
+            return rtn;
         }
     }
 }

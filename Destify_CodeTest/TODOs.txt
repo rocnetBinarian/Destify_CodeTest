@@ -1,5 +1,4 @@
 - Add more seed data
-- Test PUT to make sure it actually does a full replace
 
 BONUS:
 - rate limiting on Get
