@@ -100,5 +100,17 @@ namespace Destify_CodeTest.Controllers
             }
             return StatusCode(500, rtn.Message);
         }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("Search/{query}")]
+        public IActionResult Search(string query) {
+            var movies = _movieService.Search(query);
+            var rtn = new List<s_Movie>();
+            movies.ForEach(m => {
+                rtn.Add(_movieService.BuildMovieVM(m));
+            });
+            return Ok(rtn);
+        }
     }
 }

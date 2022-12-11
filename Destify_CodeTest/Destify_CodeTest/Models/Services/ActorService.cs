@@ -64,6 +64,8 @@ namespace Destify_CodeTest.Models.Services
         {
             return _context.Actors
                 .Where(x => x.Name.Contains(query))
+                .Include(x => x.Movies)
+                .ThenInclude(x => x.MovieRatings)
                 .ToList();
         }
 

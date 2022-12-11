@@ -99,5 +99,17 @@ namespace Destify_CodeTest.Controllers
             }
             return StatusCode(500, rtn.Message);
         }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("Search/{query}")]
+        public IActionResult Search(string query) {
+            var actors = _actorService.Search(query);
+            var rtn = new List<s_Actor>();
+            actors.ForEach(a =>  {
+                rtn.Add(_actorService.BuildActorVM(a));
+            });
+            return Ok(rtn);
+        }
     }
 }
