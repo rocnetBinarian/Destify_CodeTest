@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace UnitTests
 {
+    /// <summary>
+    /// Provides only a small subset of tests as an example.
+    /// </summary>
     public class ActorTests
     {
         private readonly ActorController actorController;
