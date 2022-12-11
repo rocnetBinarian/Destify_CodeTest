@@ -1,3 +1,5 @@
 
 - Include the average movie rating whenever a movie is returned.
+    - movies controller is done, so I *think* this means it's all done?
+    - no.  still need to do the opposite for actors...show all movies an actor is in without the recursion
 - implement search, and see previous bullet point
