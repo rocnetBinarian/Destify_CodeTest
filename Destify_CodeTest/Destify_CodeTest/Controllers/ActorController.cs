@@ -6,9 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Destify_CodeTest.Controllers
 {
-    /// <summary>
-    /// Controller for everything actor-related
-    /// </summary>
     [Authorize(Policy = "CUD")]
     [ApiController]
     [Route("Actors")]
