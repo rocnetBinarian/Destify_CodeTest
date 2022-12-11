@@ -1,5 +1,6 @@
 ﻿using Destify_CodeTest.Models.Entities;
 using Destify_CodeTest.Models.Services;
+using Destify_CodeTest.Models.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -62,7 +63,8 @@ namespace Destify_CodeTest.Controllers
             {
                 return NotFound();
             }
-            return Ok(movie);
+            var rtn = _movieService.BuildMovieVM(movie);
+            return Ok(rtn);
         }
 
         [HttpPatch]

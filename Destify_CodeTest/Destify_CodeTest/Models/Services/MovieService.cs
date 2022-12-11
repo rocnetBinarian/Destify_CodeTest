@@ -1,4 +1,5 @@
 ﻿using Destify_CodeTest.Models.Entities;
+using Destify_CodeTest.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace Destify_CodeTest.Models.Services
@@ -46,7 +47,10 @@ namespace Destify_CodeTest.Models.Services
 
         public Movie GetById(int id)
         {
-            return _context.Movies.FirstOrDefault(x => x.Id == id);
+            return _context.Movies
+                .Include(x => x.Actors)
+                .Include(x => x.MovieRatings)
+                .FirstOrDefault(x => x.Id == id);
         }
 
         public List<Movie> Search(string query)
@@ -91,6 +95,30 @@ namespace Destify_CodeTest.Models.Services
                 return ex;
             }
             return null;
+        }
+
+        public s_Movie BuildMovieVM(Movie movie)
+        {
+            var actorList = new List<s_ActorsInMovie>();
+            if (movie.Actors.Count > 0) {
+                foreach (var actor in movie.Actors) {
+                    actorList.Add(new s_ActorsInMovie() {
+                        Id = actor.Id,
+                        Name = actor.Name
+                    });
+                }
+            }
+            double? avgRating = null;
+            if (movie.MovieRatings.Count > 0) {
+                avgRating = movie.MovieRatings.Average(x => x.Rating);
+            }
+            var rtn = new s_Movie() {
+                Id = movie.Id,
+                Name = movie.Name,
+                Actors = actorList,
+                AvgRating = avgRating
+            };
+            return rtn;
         }
     }
 }

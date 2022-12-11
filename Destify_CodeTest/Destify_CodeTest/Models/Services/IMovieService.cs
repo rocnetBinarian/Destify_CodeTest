@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using Destify_CodeTest.Models.ViewModels;
 
 namespace Destify_CodeTest.Models.Services
 {
@@ -12,5 +13,6 @@ namespace Destify_CodeTest.Models.Services
         Entities.Movie Update(int movieId, Entities.Movie movie);
         Exception Replace(int movieId, Entities.Movie movie);
         bool DeleteById(int id);
+        s_Movie BuildMovieVM(Entities.Movie movie);
     }
 }
