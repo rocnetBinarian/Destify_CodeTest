@@ -14,7 +14,6 @@ namespace Destify_CodeTest.Models.Services
         {
             try
             {
-                rating.Id = default;
                 _context.MovieRatings.Add(rating);
                 _context.SaveChanges();
             } catch (Exception ex)

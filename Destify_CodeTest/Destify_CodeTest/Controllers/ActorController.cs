@@ -29,7 +29,7 @@ namespace Destify_CodeTest.Controllers
             try
             {
                 var id = _actorService.Create(actor);
-                return Created("Created actor with ID " + id, actor);
+                return Created("/Get?id="+id, actor);
             } catch (Exception ex)
             {
                 return StatusCode(500, "Failed to create actor: " + ex.ToString());

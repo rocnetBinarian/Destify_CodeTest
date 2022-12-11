@@ -15,7 +15,6 @@ namespace Destify_CodeTest.Models.Services
 
         public int Create(Actor actor)
         {
-            actor.Id = default;
             _context.Actors.Add(actor);
             _context.SaveChanges();
             return actor.Id;
